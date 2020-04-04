@@ -1,0 +1,174 @@
+/**
+ * Sidebar
+ */
+
+// Variables
+// =========
+$side-bar-xsmall-min: $xsmall-max * 0.8;
+$side-bar-medium-margin: $small-min * 0.5;
+$side-bar-large-margin: $medium-min * 0.3;
+$side-bar-xlarge-margin: $xlarge-min * 0.2;
+$side-bar-xxlarge-margin: $xlarge-min * 0.21;
+$side-bar-transition-speed: 0.3s;
+
+
+// Mixins
+// ======
+@mixin responsible-sidebar($min-breakpoint, $sidebar-width)
+{
+
+  @media (min-width: $min-breakpoint) {
+
+
+    .content {
+        &.content--with-sidebar {
+            @if $min-breakpoint > $xsmall-min {
+                width: calc(100% - #{$sidebar-width});
+                margin-left: $sidebar-width;
+            }
+        }
+    }
+
+    .sidebar {
+      width: $sidebar-width;
+    }
+
+    .sidebar--collapsed {
+      //display: none;
+      margin-left: -$sidebar-width;
+
+      &+.content {
+        margin-left: 0 !important;
+        width: 100% !important;
+      }
+    }
+
+    .body--loaded {
+
+      .sidebar {
+        transition: margin-left $side-bar-transition-speed ease-in, width $side-bar-transition-speed ease-in;
+
+        &+.content {
+          transition: margin-left $side-bar-transition-speed ease-in, width $side-bar-transition-speed ease-in;
+        }
+      }
+
+      .sidebar--collapsed {
+        transition: margin-left $side-bar-transition-speed ease-out, width $side-bar-transition-speed ease-out;
+
+        &+.content {
+          transition: margin-left $side-bar-transition-speed ease-out, width $side-bar-transition-speed ease-out;
+        }
+      }
+    }
+
+  }
+
+}
+
+// Content
+// =======
+.content {
+    &.content--with-sidebar {
+        min-height: calc(100% - 80px);
+    }
+}
+
+.body--loaded .content {
+  transition: margin-left 0.5s ease-in;
+}
+
+
+// Sidebar
+// =======
+.sidebar {
+  position: fixed;
+  z-index: 100;
+  top: 80px;
+  bottom: 0;
+  box-sizing: border-box;
+  border-right: 1px #e5e5e5 solid;
+  overflow-y: auto;
+  overflow-x: hidden;
+  width: $side-bar-xsmall-min;
+  margin-left: 0;
+
+
+  &::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    background-color: #F5F5F5;
+  }
+
+  &::-webkit-scrollbar {
+    width: 6px;
+    background-color: #F5F5F5;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+    background-color: #bdbdbd;
+  }
+}
+
+// Sidebar state
+// =============
+.body--loaded .sidebar {
+  transition: margin-left 0.5s ease-in;
+}
+
+
+// Reponsive sidebar
+// =================
+@include responsible-sidebar($xsmall-min, $side-bar-xsmall-min);
+@include responsible-sidebar($medium-min, $side-bar-medium-margin);
+@include responsible-sidebar($large-min, $side-bar-large-margin);
+@include responsible-sidebar($xlarge-min, $side-bar-xlarge-margin);
+@include responsible-sidebar($xxlarge-min, $side-bar-xxlarge-margin);
+
+
+// Sidebar list
+// ============
+#sidebar ul.uk-nav-default > li > a {
+    padding: 8px 20px;
+    border-left: 2px solid transparent;
+    transition: all 0.15s ease-out;
+}
+#sidebar ul.uk-nav-default li.uk-nav-header {
+    padding:  20px 20px 8px 20px;
+}
+
+#sidebar ul.uk-nav-default > li > a:hover, #sidebar ul.uk-nav-default > li.uk-open > a {
+    border-left: 2px solid #39f;
+    padding-left: 30px;
+    background-color: rgba(0, 0, 0, 0.04);
+}
+#sidebar ul.uk-nav-default li .uk-nav-sub {
+    text-align: right;
+    padding-right: 34px;
+
+    a {
+        padding: 6px 0;
+    }
+}
+#sidebar .uk-dropdown.user-drop {
+    min-width: 160px;
+    max-width: 160px;
+    padding: 0.75rem;
+}
+/* Drop arrow */
+#sidebar .uk-dropdown.user-drop:after {
+    bottom: 100%;
+    left: 50%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+    border-color: rgba(255, 255, 255, 0);
+    border-bottom-color: #fff;
+    border-width: 4px;
+    margin-left: -4px;
+}
+
+
